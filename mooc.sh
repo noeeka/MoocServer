@@ -1,7 +1,9 @@
 ﻿#安装系统必须组件服务
 install_needs(){
 
-	setenforce 0
+	echo "SELINUX=disabled
+	SELINUXTYPE=targeted
+	" > /etc/selinux/config
 	yum -y update
 	if test $? != 0 ; then
 		echo "yum -y update" >> log
@@ -277,6 +279,8 @@ http {
 	access_log  /var/log/nginx/access.log;
 	include /etc/nginx/conf.d/*.conf;
 }' > /etc/nginx/nginx.conf
+sed -i "s/^.*date\.timezone =.*$/date\.timezone = \"Asia\/Shanghai\"/" /etc/php.ini
+sed -i "s/^.*ignore_user_abort.*$/ignore_user_abort = On/" /etc/php.ini
 echo 'extension = "redis.so"' >> /etc/php.ini
 chown -R mysql:mysql /var/lib/mysql
 }
@@ -526,6 +530,7 @@ cd /data/www/mooc_admin && sudo sh mooc_admin.sh
 echo "127.0.0.1	demo-mooc.com
 127.0.0.1	mooc.com
 " >> /etc/hosts
+ntpdate cn.pool.ntp.org
 }
 
 install_needs
