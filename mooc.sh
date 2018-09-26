@@ -269,9 +269,15 @@ events {
 
 
 http {
+
+    add_header Access-Control-Allow-Origin *;
+    add_header Access-Control-Allow-Headers X-Requested-With;
+    add_header Access-Control-Allow-Methods GET,POST,OPTIONS;
+
 	sendfile on;
 	tcp_nopush on;
 	tcp_nodelay on;
+	client_max_body_size 200m;
 	keepalive_timeout 65;
 	types_hash_max_size 2048;
 	include /etc/nginx/mime.types;
