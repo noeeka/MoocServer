@@ -519,6 +519,7 @@ echo "{
 'webpack-uglify-parallel': '^0.1.4'
 }
 }" > package.json
+sed -i 's/'"'"/'"''/g' package.json
 npm install
 npm install --save-dev babel-preset-stage-3
 npm install --save-dev babel-preset-env
