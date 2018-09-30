@@ -365,66 +365,66 @@ dbpass=$(grep 'temporary password' /var/log/mysqld.log |cut -d ":" -f 4,10 | sed
 echo "<?php
 return [
 // 数据库类型
-'type'            = > 'mysql',
+'type'            => 'mysql',
 // 服务器地址
-'hostname'        = > '127.0.0.1',
+'hostname'        => '127.0.0.1',
 // 数据库名
-'database'        = > 'mooc_center',
+'database'        => 'mooc_center',
 // 用户名
-'username'        = > 'root',
+'username'        => 'root',
 // 密码
-'password'        = > '${dbpass}',
+'password'        => '${dbpass}',
 // 端口
-'hostport'        = > '',
+'hostport'        => '',
 // 连接dsn
-'dsn'             = > '',
+'dsn'             => '',
 // 数据库连接参数
-'params'          = > [],
+'params'          => [],
 // 数据库编码默认采用utf8
-'charset'         = > 'utf8',
+'charset'         => 'utf8',
 // 数据库表前缀
-'prefix'          = > '',
+'prefix'          => '',
 // 数据库调试模式
-'debug'           = > true,
+'debug'           => true,
 // 数据库部署方式:0 集中式(单一服务器),1 分布式(主从服务器)
-'deploy'          = > 0,
+'deploy'          => 0,
 // 数据库读写是否分离 主从式有效
-'rw_separate'     = > false,
+'rw_separate'     => false,
 // 读写分离后 主服务器数量
-'master_num'      = > 1,
+'master_num'      => 1,
 // 指定从服务器序号
-'slave_no'        = > '',
+'slave_no'        => '',
 // 是否严格检查字段是否存在
-'fields_strict'   = > true,
+'fields_strict'   => true,
 // 数据集返回类型
-'resultset_type'  = > 'array',
+'resultset_type'  => 'array',
 // 自动写入时间戳字段
-'auto_timestamp'  = > false,
+'auto_timestamp'  => false,
 // 时间字段取出后的默认时间格式
-'datetime_format' = > false,
+'datetime_format' => false,
 // 是否需要进行SQL性能分析
-'sql_explain'     = > false,
+'sql_explain'     => false,
 ];
 " > /data/www/mooc_center/application/database.php
 echo "<?php
 return [
 // 数据库类型
-'type'     = > 'mysql',
+'type'     => 'mysql',
 // 服务器地址
-'hostname' = > 'localhost',
+'hostname' => 'localhost',
 // 数据库名
-'database' = > 'demo-mooc',
+'database' => 'demo-mooc',
 // 用户名
-'username' = > 'root',
+'username' => 'root',
 // 密码
-'password' = > '${dbpass}',
+'password' => '${dbpass}',
 // 端口
-'hostport' = > '3306',
+'hostport' => '3306',
 // 数据库编码默认采用utf8
-'charset'  = > 'utf8mb4',
+'charset'  => 'utf8mb4',
 // 数据库表前缀
-'prefix'   = > 'cxtj_',
-'authcode' = > 'HmyDzUUsgsAPtBNUpM',
+'prefix'   => 'cxtj_',
+'authcode' => 'HmyDzUUsgsAPtBNUpM',
 //#COOKIE_PREFIX#
 ];" > /data/www/chaoxingwhg/data/conf/database.php
 cd /data/www/mooc_admin
