@@ -126,6 +126,8 @@ install_redis(){
 
 #配置LNMP服务
 config_LNMP(){
+
+	echo "sql_mode='NO_ENGINE_SUBSTITUTION'" >> /etc/my.cnf
 	echo 'server{
 	listen 80 default_server;
 	listen [::]:80 default_server;
