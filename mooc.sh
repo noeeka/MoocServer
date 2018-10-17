@@ -287,6 +287,8 @@ http {
 	access_log  /var/log/nginx/access.log;
 	include /etc/nginx/conf.d/*.conf;
 }' > /etc/nginx/nginx.conf
+sed -i "s/post_max_size = .*M/post_max_size = 200M/g" /etc/php.ini
+sed -i "s/upload_max_filesize = .*M/upload_max_filesize = 200M/g" /etc/php.ini
 sed -i "s/^.*date\.timezone =.*$/date\.timezone = \"Asia\/Shanghai\"/" /etc/php.ini
 sed -i "s/^.*ignore_user_abort.*$/ignore_user_abort = On/" /etc/php.ini
 echo 'extension = "redis.so"' >> /etc/php.ini
