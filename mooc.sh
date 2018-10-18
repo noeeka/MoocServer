@@ -56,6 +56,10 @@ install_needs(){
 	if test $? != 0 ; then
 		echo "yum install unzip -y" >> log
 	fi
+	yum install ntpdate -y
+	if test $? != 0 ; then
+		echo "yum install ntpdate -y" >> log
+	fi
 }
 
 #安装LNMP服务
@@ -330,17 +334,37 @@ fi
 
 #安装nodejs服务
 install_node(){
-curl -sL https://rpm.nodesource.com/setup_6.x | sudo -E bash -
+# curl -sL https://rpm.nodesource.com/setup_6.x | sudo -E bash -
+# if test $? != 0 ; then
+# 	echo "curl -sL https://rpm.nodesource.com/setup_6.x | sudo -E bash -" >> log
+# fi
+# yum install nodejs -y
+# if test $? != 0 ; then
+# 	echo "yum install nodejs -y" >> log
+# fi
+# yum install -y npm --enablerepo=epel
+# if test $? != 0 ; then
+# 	echo "yum install -y npm --enablerepo=epel" >> log
+# fi
+wget https://nodejs.org/dist/v6.14.4/node-v6.14.4.tar.gz
 if test $? != 0 ; then
-	echo "curl -sL https://rpm.nodesource.com/setup_6.x | sudo -E bash -" >> log
+	echo "wget https://nodejs.org/dist/v6.14.4/node-v6.14.4.tar.gz" >> log
 fi
-yum install nodejs -y
+tar -xf node-v6.14.4.tar.gz
 if test $? != 0 ; then
-	echo "yum install nodejs -y" >> log
+	echo "tar -xf node-v6.14.4.tar.gz" >> log
 fi
-yum install -y npm --enablerepo=epel
+cd node-v6.14.4
 if test $? != 0 ; then
-	echo "yum install -y npm --enablerepo=epel" >> log
+	echo "cd node-v6.14.4" >> log
+fi
+./configure
+if test $? != 0 ; then
+	echo "./configure" >> log
+fi
+make && make install
+if test $? != 0 ; then
+	echo "make && make install" >> log
 fi
 }
 
@@ -359,7 +383,7 @@ git clone http://chenchen:1q2w3e4r@gitlab.szwhg.chaoxing.com/chenchen/goland.git
 mkdir /usr/local/weeds
 cp -r ./goland/weed/* /usr/local/weeds
 chmod -R 777 /usr/local/weeds
-
+cp -r ./goland/weeds /data/
 mkdir /data/www/chaoxingwhg
 cp -r ./mooc/* /data/www/chaoxingwhg
 chmod -R 777 /data
@@ -436,100 +460,19 @@ echo '{
 "comments": false
 }
 ' > .babelrc
-ipaddr=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
-echo "{
-'name': 'iview-admin',
-'version': '1.3.1',
-'description': 'Vue 2.0 admin management system template based on iView',
-'main': 'index.js',
-'scripts': {
-'init': 'webpack --progress --config build/webpack.dev.config.js',
-'dev': 'webpack-dev-server --content-base ./ --open --inline --hot --compress --host=${ipaddr} --config build/webpack.dev.config.js',
-'build': 'webpack --progress --hide-modules --config build/webpack.prod.config.js',
-'lint': 'eslint --fix --ext .js,.vue src',
-'test': 'npm run lint'
-},
-'repository': {
-'type': 'git',
-'url': 'https://github.com/iview/iview-admin.git'
-},
-'author': 'Lison<zhigang.li@tendcloud.com > ',
-'license': 'MIT',
-'dependencies': {
-'area-data': '^1.0.0',
-'axios': '^0.17.1',
-'cascader-multi': '^2.0.1',
-'clipboard': '^1.7.1',
-'countup': '^1.8.2',
-'cropperjs': '^1.2.2',
-'echarts': '^3.8.5',
-'html2canvas': '^0.5.0-beta4',
-'iview': '^2.14.3',
-'js-cookie': '^2.2.0',
-'rasterizehtml': '^1.2.4',
-'simplemde': '^1.11.2',
-'sortablejs': '^1.7.0',
-'tinymce': '^4.7.4',
-'vue': '^2.5.13',
-'vue-router': '^3.0.1',
-'vue-virtual-scroller': '^0.10.6',
-'vuex': '^3.0.1',
-'xlsx': '^0.11.17'
-},
-'devDependencies': {
-'autoprefixer-loader': '^3.2.0',
-'babel': '^6.23.0',
-'babel-core': '^6.23.1',
-'babel-eslint': '^8.2.1',
-'babel-loader': '^7.1.2',
-'babel-plugin-syntax-dynamic-import': '^6.18.0',
-'babel-plugin-transform-runtime': '^6.12.0',
-'babel-preset-env': '^1.6.1',
-'babel-preset-es2015': '^6.9.0',
-'babel-preset-stage-3': '^6.24.1',
-'babel-runtime': '^6.11.6',
-'clean-webpack-plugin': '^0.1.17',
-'copy-webpack-plugin': '^4.3.1',
-'css-hot-loader': '^1.3.5',
-'css-loader': '^0.28.8',
-'ejs-loader': '^0.3.0',
-'eslint': '^4.15.0',
-'eslint-config-standard': '^10.2.1',
-'eslint-plugin-html': '^4.0.1',
-'eslint-plugin-import': '^2.8.0',
-'eslint-plugin-node': '^5.2.1',
-'eslint-plugin-promise': '^3.6.0',
-'eslint-plugin-standard': '^3.0.1',
-'extract-text-webpack-plugin': '^3.0.2',
-'file-loader': '^1.1.6',
-'happypack': '^4.0.1',
-'html-loader': '^0.5.4',
-'html-webpack-plugin': '^2.28.0',
-'less': '^2.7.3',
-'less-loader': '^4.0.5',
-'semver': '^5.4.1',
-'style-loader': '^0.19.1',
-'unsupported': '^1.1.0',
-'url-loader': '^0.6.2',
-'vue-hot-reload-api': '^2.2.4',
-'vue-html-loader': '^1.2.3',
-'vue-i18n': '^5.0.3',
-'vue-loader': '^13.7.0',
-'vue-style-loader': '^3.0.3',
-'vue-template-compiler': '^2.5.13',
-'webpack': '^3.10.0',
-'webpack-dev-server': '^2.10.1',
-'webpack-merge': '^4.1.1',
-'webpack-uglify-parallel': '^0.1.4'
-}
-}" > package.json
-sed -i 's/'"'"/'"''/g' package.json
+ipaddr="$(ifconfig | grep -A 1 'eth0' | tail -1 | cut -d ':' -f 2 | cut -d ' ' -f 1)"
+sed -i 's/http\:\/\/.*\:/http\:\/\/'"$ipaddr"'\:/g' /etc/nginx/conf.d/demo-mooc.conf
+sed -i 's/--host=.* --/--host='"$ipaddr"' --/g' /data/www/mooc_admin/package.json
+sed -i 's/http\:\/\/.*\:/http\:\/\/'"$ipaddr"'\:/g' /data/www/mooc_center/time.php
+sed -i 's/http\:\/\/.*\:/http\:\/\/'"$ipaddr"'\:/g' /data/www/mooc_center/application/v1/model/WeedModel.php
+npm config set registry "http://r.cnpmjs.org/"
 npm install
 npm install --save-dev babel-preset-stage-3
 npm install --save-dev babel-preset-env
 npm install --save-dev babel-plugin-transform-runtime
 npm install --save-dev babel-plugin-syntax-dynamic-import
 npm install jquery
+npm install --save wangeditor@2.1.22
 npm audit fix
 
 
@@ -541,6 +484,19 @@ cd /data/www/mooc_admin && sudo sh mooc_admin.sh
 echo "127.0.0.1	demo-mooc.com
 127.0.0.1	mooc.com
 " >> /etc/hosts
+cat > /etc/rc.local <<EOF
+#!/bin/sh
+touch /var/lock/subsys/local
+/etc/init.d/nginx restart
+/etc/init.d/php-fpm restart
+/etc/init.d/mysqld restart
+/etc/init.d/redis restart
+cd /data/www/mooc_admin/ && nohup npm run dev &
+cd /data/www/mooc_center && nohup php time.php start &
+ntpdate cn.pool.ntp.org
+cd /usr/local/weeds && nohup ./weed -log_dir=/data/weeds/masterData/logs  master -mdir=/data/weeds/masterData/data -port=9333 -whiteList="127.0.0.1,$ipaddr" >> ./server_sfs.log &
+cd /usr/local/weeds && nohup ./weed -v 3 -log_dir "/data/weeds/volumeData/logs" volume  -port 9334 -dir "/data/weeds/volumeData/v1" -dataCenter=v1 -whiteList "127.0.0.1,$ipaddr" >>./volume_v1_sfs.log &
+EOF
 ntpdate cn.pool.ntp.org
 }
 
