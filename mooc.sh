@@ -334,37 +334,13 @@ fi
 
 #安装nodejs服务
 install_node(){
-# curl -sL https://rpm.nodesource.com/setup_6.x | sudo -E bash -
-# if test $? != 0 ; then
-# 	echo "curl -sL https://rpm.nodesource.com/setup_6.x | sudo -E bash -" >> log
-# fi
-# yum install nodejs -y
-# if test $? != 0 ; then
-# 	echo "yum install nodejs -y" >> log
-# fi
-# yum install -y npm --enablerepo=epel
-# if test $? != 0 ; then
-# 	echo "yum install -y npm --enablerepo=epel" >> log
-# fi
-wget https://nodejs.org/dist/v6.14.4/node-v6.14.4.tar.gz
+curl -sL https://rpm.nodesource.com/setup_6.x | sudo -E bash -
 if test $? != 0 ; then
-	echo "wget https://nodejs.org/dist/v6.14.4/node-v6.14.4.tar.gz" >> log
+	echo "curl -sL https://rpm.nodesource.com/setup_6.x | sudo -E bash -" >> log
 fi
-tar -xf node-v6.14.4.tar.gz
+yum install nodejs -y
 if test $? != 0 ; then
-	echo "tar -xf node-v6.14.4.tar.gz" >> log
-fi
-cd node-v6.14.4
-if test $? != 0 ; then
-	echo "cd node-v6.14.4" >> log
-fi
-./configure
-if test $? != 0 ; then
-	echo "./configure" >> log
-fi
-make && make install
-if test $? != 0 ; then
-	echo "make && make install" >> log
+	echo "yum install nodejs -y" >> log
 fi
 }
 
@@ -475,12 +451,6 @@ npm install jquery
 npm install --save wangeditor@2.1.22
 npm audit fix
 
-
-cd /usr/local/weeds && sudo sh master.sh && sudo sh volume.sh
-cd /data/www/mooc_center && php time.php start -d
-cd /data/www/mooc_admin && sudo sh mooc_admin.sh
-
-
 echo "127.0.0.1	demo-mooc.com
 127.0.0.1	mooc.com
 " >> /etc/hosts
@@ -492,12 +462,18 @@ touch /var/lock/subsys/local
 /etc/init.d/mysqld restart
 /etc/init.d/redis restart
 cd /data/www/mooc_admin/ && nohup npm run dev &
-cd /data/www/mooc_center && nohup php time.php start &
+cd /data/www/mooc_center && php time.php start -d
 ntpdate cn.pool.ntp.org
 cd /usr/local/weeds && nohup ./weed -log_dir=/data/weeds/masterData/logs  master -mdir=/data/weeds/masterData/data -port=9333 -whiteList="127.0.0.1,$ipaddr" >> ./server_sfs.log &
 cd /usr/local/weeds && nohup ./weed -v 3 -log_dir "/data/weeds/volumeData/logs" volume  -port 9334 -dir "/data/weeds/volumeData/v1" -dataCenter=v1 -whiteList "127.0.0.1,$ipaddr" >>./volume_v1_sfs.log &
 EOF
 ntpdate cn.pool.ntp.org
+yum -y update
+if test $? != 0 ; then
+	echo "yum -y update" >> log
+fi
+/etc/init.d/iptables stop
+chkconfig iptables off
 }
 
 install_needs
